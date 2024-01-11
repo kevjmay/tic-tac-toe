@@ -1,14 +1,15 @@
 console.log('WELCOME! Tic-Tac-Toe:')
 
 //Setting up a 3x3 gameboard
+const rows = 3;
+const columns = 3;
+
 function Gameboard() {
-    const rows = 3;
-    const columns = 3;
     const board = [];
 
-    for (i=0; i<rows; i++) {
+    for (let i=0; i<rows; i++) {
         board[i] = [];
-        for (j=0; j<columns; j++) {
+        for (let j=0; j<columns; j++) {
             board[i].push("");
         }
     }
@@ -17,14 +18,21 @@ function Gameboard() {
     //This is used to return the board object to the DOM.
     const getBoard = () => board;
 
-    return {getBoard};
+    // Reset the board to empty strings
+    const resetBoard = () => {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < columns; j++) {
+                board[i][j] = "";
+            }
+        }
+    };
+
+    return {getBoard, resetBoard};
 }
-// Gameboard();
-// console.log(typeof(Gameboard))
 
 function gameController(
-    playerOne = "Player One", 
-    playerTwo = "Player Two"
+    playerOne = "Kevin", 
+    playerTwo = "Computer"
 ) {
     const board = Gameboard()
     
@@ -38,24 +46,85 @@ function gameController(
             mark: 'O'
         }
     ];
-    console.log(players)
+    console.log(`Player one is: ${players[0].name} - mark: ${players[0].mark}`)
+    console.log(`Player two is: ${players[1].name} - mark: ${players[1].mark}`)
+    
+    //Setting the active player i.e whose turn it is.
     let activePlayer = players[0]
-    console.log(activePlayer)
+    console.log(`This is the active player before switch runs: ${activePlayer.name}`)
 
+    //Switching between the active player i.e next persons turn.
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
     };
 
     const getActivePlayer = () => activePlayer;
-    console.log(getActivePlayer())
 
     const playRound = () => {
-        console.log(`The current player is: ${getActivePlayer}`)
         //And then switch new active player after this is called
         switchPlayerTurn()
+        console.log(`This is the active player after switch runs: ${activePlayer.name}`)
+    };
+
+    const checkBoard = () => {
+        let currentBoard = board.getBoard()
+
+        //Check rows
+        for (let i = 0; i < rows; i++) {
+            if (currentBoard[i].every(mark => mark === activePlayer.mark)) {
+                console.log(`${activePlayer.name} wins horizontally`);
+                board.resetBoard();
+                return;
+            }
+        }
+
+        //Check columns
+        for (let j = 0; j < columns; j++) {
+            if (currentBoard.every(row => row[j] === activePlayer.mark)) {
+                console.log(`${activePlayer.name} wins vertically!`);
+                board.resetBoard();
+                return;
+            }
+        }
+
+        // Check diagonals
+        if (
+            (currentBoard[0][0] === activePlayer.mark &&
+            currentBoard[1][1] === activePlayer.mark &&
+            currentBoard[2][2] === activePlayer.mark) ||
+            (currentBoard[0][2] === activePlayer.mark &&
+            currentBoard[1][1] === activePlayer.mark &&
+            currentBoard[2][0] === activePlayer.mark)
+        ) {
+            console.log(`${activePlayer.name} wins diagonally!`);
+            board.resetBoard();
+            return;
+        }
+
+        // Check for a tie
+        if (currentBoard.every(row => row.every(mark => mark !== ""))) {
+            console.log("The game is a tie!");
+            board.resetBoard();
+            return;
+        }
+    };
+
+    const makeMark = (row, col) => {
+        let currentBoard = board.getBoard();
+        if (currentBoard[row][col] === "") {
+            currentBoard[row][col] = activePlayer.mark;
+            checkBoard();
+            switchPlayerTurn();
+            console.log(currentBoard)
+            console.log(`The active player is: ${activePlayer.name}`)
+        } else {
+            console.log("Cell already taken. Try again.");
+        }
     }
 
-    return {getActivePlayer, playRound};
+    return {getActivePlayer, playRound, makeMark};
 }
 
 const game = gameController();
+
+
