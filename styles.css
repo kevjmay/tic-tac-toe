@@ -1,3 +1,26 @@
 h1 {
     text-align: center;
 }
+
+.playerNames{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.board{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.rowOne, .rowTwo, .rowThree{
+    display: flex;
+    height: 10em;
+}
+
+.cell{
+    width: 10em;
+}
+
+.activePlayerDisplay{
+    text-align: center;
+}

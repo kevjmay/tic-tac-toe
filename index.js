@@ -46,12 +46,17 @@ function gameController(
             mark: 'O'
         }
     ];
-    console.log(`Player one is: ${players[0].name} - mark: ${players[0].mark}`)
-    console.log(`Player two is: ${players[1].name} - mark: ${players[1].mark}`)
+    let playerOneDisplay = document.querySelector('.playerOneDisplay')
+    let playerTwoDisplay = document.querySelector('.playerTwoDisplay')
+    playerOneDisplay.textContent = `Player X: ${players[0].name}`
+    playerTwoDisplay.textContent = `Player O: ${players[1].name}`
     
     //Setting the active player i.e whose turn it is.
     let activePlayer = players[0]
     console.log(`This is the active player before switch runs: ${activePlayer.name}`)
+
+    let activePlayerDisplay = document.querySelector('.activePlayerDisplay')
+    activePlayerDisplay.textContent = `The active player is: ${activePlayer.name}`
 
     //Switching between the active player i.e next persons turn.
     const switchPlayerTurn = () => {
@@ -63,7 +68,7 @@ function gameController(
     const playRound = () => {
         //And then switch new active player after this is called
         switchPlayerTurn()
-        console.log(`This is the active player after switch runs: ${activePlayer.name}`)
+        activePlayerDisplay.textContent = `The active player is: ${activePlayer.name}`
     };
 
     const checkBoard = () => {
