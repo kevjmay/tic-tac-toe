@@ -25,6 +25,14 @@ function Gameboard() {
                 board[i][j] = "";
             }
         }
+
+        let clearCells = document.querySelectorAll('.cell')
+        clearCells.forEach((cell) => {
+            cell.textContent = ''
+        }); 
+
+        gameController()
+       
     };
 
     return {getBoard, resetBoard};
@@ -48,8 +56,8 @@ function gameController(
     ];
     let playerOneDisplay = document.querySelector('.playerOneDisplay')
     let playerTwoDisplay = document.querySelector('.playerTwoDisplay')
-    playerOneDisplay.textContent = `Player X: ${players[0].name}`
-    playerTwoDisplay.textContent = `Player O: ${players[1].name}`
+    playerOneDisplay.textContent = `Player: ${players[0].name} | Mark: ${players[0].mark}`
+    playerTwoDisplay.textContent = `Player: ${players[1].name} | Mark: ${players[1].mark}`
     
     //Setting the active player i.e whose turn it is.
     let activePlayer = players[0]
@@ -57,6 +65,8 @@ function gameController(
 
     let activePlayerDisplay = document.querySelector('.activePlayerDisplay')
     activePlayerDisplay.textContent = `The active player is: ${activePlayer.name}`
+
+    let winMessage = document.querySelector('.winMessage')
 
     //Switching between the active player i.e next persons turn.
     const switchPlayerTurn = () => {
@@ -68,7 +78,8 @@ function gameController(
     const playRound = () => {
         //And then switch new active player after this is called
         switchPlayerTurn()
-        activePlayerDisplay.textContent = `The active player is: ${activePlayer.name}`
+        activePlayerDisplay.textContent = `The active player is: ${players[0].name}`
+        winMessage.textContent = ''
     };
 
     const checkBoard = () => {
@@ -79,6 +90,8 @@ function gameController(
             if (currentBoard[i].every(mark => mark === activePlayer.mark)) {
                 console.log(`${activePlayer.name} wins horizontally`);
                 board.resetBoard();
+                winMessage.textContent = `${activePlayer.name} has won!`
+                switchPlayerTurn()
                 return;
             }
         }
@@ -88,6 +101,8 @@ function gameController(
             if (currentBoard.every(row => row[j] === activePlayer.mark)) {
                 console.log(`${activePlayer.name} wins vertically!`);
                 board.resetBoard();
+                winMessage.textContent = `${activePlayer.name} has won!`
+                switchPlayerTurn()
                 return;
             }
         }
@@ -103,6 +118,8 @@ function gameController(
         ) {
             console.log(`${activePlayer.name} wins diagonally!`);
             board.resetBoard();
+            winMessage.textContent = `${activePlayer.name} has won!`
+            switchPlayerTurn()
             return;
         }
 
@@ -110,6 +127,8 @@ function gameController(
         if (currentBoard.every(row => row.every(mark => mark !== ""))) {
             console.log("The game is a tie!");
             board.resetBoard();
+            winMessage.textContent = `The game is a tie!`
+            switchPlayerTurn()
             return;
         }
     };
@@ -120,12 +139,86 @@ function gameController(
             currentBoard[row][col] = activePlayer.mark;
             checkBoard();
             switchPlayerTurn();
+            activePlayerDisplay.textContent = `The active player is: ${activePlayer.name}`
             console.log(currentBoard)
             console.log(`The active player is: ${activePlayer.name}`)
         } else {
             console.log("Cell already taken. Try again.");
         }
     }
+
+    //Links for UI:
+    //rowOneCellOne
+    function tickedOneCellOne() {
+        rowOneCellOne.textContent = activePlayer.mark
+        makeMark(0,0)
+    } 
+    let rowOneCellOne = document.querySelector('#rowOneCellOne')
+    rowOneCellOne.addEventListener('click', tickedOneCellOne)
+
+    //rowOneCellTwo
+    function tickedOneCellTwo() {
+        rowOneCellTwo.textContent = activePlayer.mark
+        makeMark(0,1)
+    }
+    let rowOneCellTwo = document.querySelector('#rowOneCellTwo')
+    rowOneCellTwo.addEventListener('click', tickedOneCellTwo)
+
+    //rowOneCellThree
+    function tickedOneCellThree() {
+        rowOneCellThree.textContent = activePlayer.mark
+        makeMark(0,2)
+    }
+    let rowOneCellThree = document.querySelector('#rowOneCellThree')
+    rowOneCellThree.addEventListener('click', tickedOneCellThree)
+
+    //rowTwoCellOne
+    function tickedTwoCellOne() {
+        rowTwoCellOne.textContent = activePlayer.mark
+        makeMark(1,0)
+    }
+    let rowTwoCellOne = document.querySelector('#rowTwoCellOne')
+    rowTwoCellOne.addEventListener('click', tickedTwoCellOne)
+
+    //rowTwoCellTwo
+    function tickedTwoCellTwo() {
+        rowTwoCellTwo.textContent = activePlayer.mark
+        makeMark(1,1)
+    }
+    let rowTwoCellTwo = document.querySelector('#rowTwoCellTwo')
+    rowTwoCellTwo.addEventListener('click', tickedTwoCellTwo)
+
+    //rowTwoCellThree
+    function tickedTwoCellThree() {
+        rowTwoCellThree.textContent = activePlayer.mark
+        makeMark(1,2)
+    }
+    let rowTwoCellThree = document.querySelector('#rowTwoCellThree')
+    rowTwoCellThree.addEventListener('click', tickedTwoCellThree)
+
+    //rowThreeCellOne
+    function tickedThreeCellOne() {
+        rowThreeCellOne.textContent = activePlayer.mark
+        makeMark(2,0)
+    }
+    let rowThreeCellOne = document.querySelector('#rowThreeCellOne')
+    rowThreeCellOne.addEventListener('click', tickedThreeCellOne)
+
+    //rowThreeCellTwo
+    function tickedThreeCellTwo() {
+        rowThreeCellTwo.textContent = activePlayer.mark
+        makeMark(2,1)
+    }
+    let rowThreeCellTwo = document.querySelector('#rowThreeCellTwo')
+    rowThreeCellTwo.addEventListener('click', tickedThreeCellTwo)
+
+    //rowThreeCellThree
+    function tickedThreeCellThree() {
+        rowThreeCellThree.textContent = activePlayer.mark
+        makeMark(2,2)
+    }
+    let rowThreeCellThree = document.querySelector('#rowThreeCellThree')
+    rowThreeCellThree.addEventListener('click', tickedThreeCellThree)
 
     return {getActivePlayer, playRound, makeMark};
 }

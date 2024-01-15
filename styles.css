@@ -21,6 +21,6 @@ h1 {
     width: 10em;
 }
 
-.activePlayerDisplay{
+.activePlayerDisplay, .winMessage{
     text-align: center;
 }
